@@ -1,11 +1,8 @@
 import { Form, Head, Link, usePage } from '@inertiajs/react';
+import { TextInput, Button, Stack, Text, Anchor, Group, Box } from '@mantine/core';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import DeleteUser from '@/components/delete-user';
 import Heading from '@/components/heading';
-import InputError from '@/components/input-error';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { edit } from '@/routes/profile';
 import { send } from '@/routes/verification';
 
@@ -22,9 +19,7 @@ export default function Profile({
         <>
             <Head title="Profile settings" />
 
-            <h1 className="sr-only">Profile settings</h1>
-
-            <div className="space-y-6">
+            <Stack gap="xl">
                 <Heading
                     variant="small"
                     title="Profile information"
@@ -36,88 +31,71 @@ export default function Profile({
                     options={{
                         preserveScroll: true,
                     }}
-                    className="space-y-6"
                 >
                     {({ processing, errors }) => (
-                        <>
-                            <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
+                        <Stack gap="md">
+                            <TextInput
+                                label="Name"
+                                id="name"
+                                name="name"
+                                defaultValue={auth.user.name}
+                                required
+                                autoComplete="name"
+                                placeholder="Full name"
+                                error={errors.name}
+                            />
 
-                                <Input
-                                    id="name"
-                                    className="mt-1 block w-full"
-                                    defaultValue={auth.user.name}
-                                    name="name"
-                                    required
-                                    autoComplete="name"
-                                    placeholder="Full name"
-                                />
-
-                                <InputError
-                                    className="mt-2"
-                                    message={errors.name}
-                                />
-                            </div>
-
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
-
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    className="mt-1 block w-full"
-                                    defaultValue={auth.user.email}
-                                    name="email"
-                                    required
-                                    autoComplete="username"
-                                    placeholder="Email address"
-                                />
-
-                                <InputError
-                                    className="mt-2"
-                                    message={errors.email}
-                                />
-                            </div>
+                            <TextInput
+                                label="Email address"
+                                id="email"
+                                type="email"
+                                name="email"
+                                defaultValue={auth.user.email}
+                                required
+                                autoComplete="username"
+                                placeholder="Email address"
+                                error={errors.email}
+                            />
 
                             {mustVerifyEmail &&
                                 auth.user.email_verified_at === null && (
-                                    <div>
-                                        <p className="-mt-4 text-sm text-muted-foreground">
+                                    <Box>
+                                        <Text size="sm" c="dimmed">
                                             Your email address is unverified.{' '}
-                                            <Link
+                                            <Anchor
+                                                component={Link}
                                                 href={send()}
+                                                method="post"
                                                 as="button"
-                                                className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
+                                                size="sm"
                                             >
-                                                Click here to resend the
-                                                verification email.
-                                            </Link>
-                                        </p>
+                                                Click here to resend the verification email.
+                                            </Anchor>
+                                        </Text>
 
-                                        {status ===
-                                            'verification-link-sent' && (
-                                            <div className="mt-2 text-sm font-medium text-green-600">
-                                                A new verification link has been
-                                                sent to your email address.
-                                            </div>
+                                        {status === 'verification-link-sent' && (
+                                            <Text size="sm" c="green" mt="xs">
+                                                A new verification link has been sent to your email address.
+                                            </Text>
                                         )}
-                                    </div>
+                                    </Box>
                                 )}
 
-                            <div className="flex items-center gap-4">
+                            <Group justify="flex-start">
                                 <Button
-                                    disabled={processing}
+                                    type="submit"
+                                    loading={processing}
                                     data-test="update-profile-button"
                                 >
                                     Save
                                 </Button>
-                            </div>
-                        </>
+                            </Group>
+                        </Stack>
                     )}
                 </Form>
-            </div>
 
-            <DeleteUser />
+                <DeleteUser />
+            </Stack>
         </>
     );
 }

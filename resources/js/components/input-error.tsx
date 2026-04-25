@@ -1,5 +1,5 @@
+import { Text } from '@mantine/core';
 import type { HTMLAttributes } from 'react';
-import { cn } from '@/lib/utils';
 
 export default function InputError({
     message,
@@ -7,11 +7,8 @@ export default function InputError({
     ...props
 }: HTMLAttributes<HTMLParagraphElement> & { message?: string }) {
     return message ? (
-        <p
-            {...props}
-            className={cn('text-sm text-red-600 dark:text-red-400', className)}
-        >
+        <Text size="xs" c="red" mt={4} {...props}>
             {message}
-        </p>
+        </Text>
     ) : null;
 }

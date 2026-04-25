@@ -1,3 +1,5 @@
+import { Stack, Title, Text } from '@mantine/core';
+
 export default function Heading({
     title,
     description,
@@ -8,19 +10,19 @@ export default function Heading({
     variant?: 'default' | 'small';
 }) {
     return (
-        <header className={variant === 'small' ? '' : 'mb-8 space-y-0.5'}>
-            <h2
-                className={
-                    variant === 'small'
-                        ? 'mb-0.5 text-base font-medium'
-                        : 'text-xl font-semibold tracking-tight'
-                }
+        <Stack gap={0} mb={variant === 'small' ? 0 : 'xl'}>
+            <Title
+                order={variant === 'small' ? 3 : 2}
+                size={variant === 'small' ? 'h4' : 'h3'}
+                fw={variant === 'small' ? 500 : 600}
             >
                 {title}
-            </h2>
+            </Title>
             {description && (
-                <p className="text-sm text-muted-foreground">{description}</p>
+                <Text size="sm" c="dimmed">
+                    {description}
+                </Text>
             )}
-        </header>
+        </Stack>
     );
 }

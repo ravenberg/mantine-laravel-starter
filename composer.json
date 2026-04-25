@@ -1,8 +1,8 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/react-starter-kit",
+    "name": "ravenberg/mantine-laravel-starter",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Laravel 13 starter kit with Mantine UI, Inertia.js v3, and React 19.",
     "keywords": [
         "laravel",
         "framework"

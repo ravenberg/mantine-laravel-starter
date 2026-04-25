@@ -1,16 +1,26 @@
+import { Group, Box, Text } from '@mantine/core';
 import AppLogoIcon from '@/components/app-logo-icon';
 
 export default function AppLogo() {
     return (
-        <>
-            <div className="flex aspect-square size-8 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-                <AppLogoIcon className="size-5 fill-current text-white dark:text-black" />
-            </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-tight font-semibold">
-                    Laravel Starter Kit
-                </span>
-            </div>
-        </>
+        <Group gap="sm">
+            <Box
+                w={32}
+                h={32}
+                style={{
+                    backgroundColor: 'var(--mantine-primary-color-filled)',
+                    color: 'var(--mantine-color-white)',
+                    borderRadius: 'var(--mantine-radius-md)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <AppLogoIcon style={{ width: 20, height: 20, fill: 'currentColor' }} />
+            </Box>
+            <Text size="sm" fw={600}>
+                Laravel Mantine Starter Kit
+            </Text>
+        </Group>
     );
 }

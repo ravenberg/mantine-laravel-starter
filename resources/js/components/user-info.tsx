@@ -1,10 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, Text, Stack, Group } from '@mantine/core';
 import { useInitials } from '@/hooks/use-initials';
 import type { User } from '@/types';
 
 export function UserInfo({
     user,
-    showEmail = false,
+    showEmail = true,
 }: {
     user: User;
     showEmail?: boolean;
@@ -12,21 +12,20 @@ export function UserInfo({
     const getInitials = useInitials();
 
     return (
-        <>
-            <Avatar className="h-8 w-8 overflow-hidden rounded-full">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg bg-neutral-200 text-black dark:bg-neutral-700 dark:text-white">
-                    {getInitials(user.name)}
-                </AvatarFallback>
+        <Group gap="sm" wrap="nowrap">
+            <Avatar src={user.avatar} alt={user.name} radius="xl" size={32}>
+                {getInitials(user.name)}
             </Avatar>
-            <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
+            <Stack gap={0} style={{ flex: 1, overflow: 'hidden' }}>
+                <Text size="sm" fw={500} truncate>
+                    {user.name}
+                </Text>
                 {showEmail && (
-                    <span className="truncate text-xs text-muted-foreground">
+                    <Text size="xs" c="dimmed" truncate>
                         {user.email}
-                    </span>
+                    </Text>
                 )}
-            </div>
-        </>
+            </Stack>
+        </Group>
     );
 }

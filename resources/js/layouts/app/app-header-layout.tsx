@@ -1,16 +1,25 @@
-import { AppContent } from '@/components/app-content';
+import { AppShell, Container } from '@mantine/core';
 import { AppHeader } from '@/components/app-header';
-import { AppShell } from '@/components/app-shell';
 import type { AppLayoutProps } from '@/types';
 
 export default function AppHeaderLayout({
     children,
-    breadcrumbs,
+    breadcrumbs = [],
 }: AppLayoutProps) {
     return (
-        <AppShell variant="header">
-            <AppHeader breadcrumbs={breadcrumbs} />
-            <AppContent variant="header">{children}</AppContent>
+        <AppShell
+            header={{ height: 64 }}
+            padding="md"
+        >
+            <AppShell.Header>
+                <AppHeader breadcrumbs={breadcrumbs} />
+            </AppShell.Header>
+
+            <AppShell.Main>
+                <Container size="lg">
+                    {children}
+                </Container>
+            </AppShell.Main>
         </AppShell>
     );
 }

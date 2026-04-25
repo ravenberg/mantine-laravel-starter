@@ -1,10 +1,5 @@
 import { Form, Head } from '@inertiajs/react';
-import InputError from '@/components/input-error';
-import PasswordInput from '@/components/password-input';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
+import { TextInput, PasswordInput, Button, Stack } from '@mantine/core';
 import { update } from '@/routes/password';
 
 type Props = {
@@ -23,64 +18,47 @@ export default function ResetPassword({ token, email }: Props) {
                 resetOnSuccess={['password', 'password_confirmation']}
             >
                 {({ processing, errors }) => (
-                    <div className="grid gap-6">
-                        <div className="grid gap-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input
-                                id="email"
-                                type="email"
-                                name="email"
-                                autoComplete="email"
-                                value={email}
-                                className="mt-1 block w-full"
-                                readOnly
-                            />
-                            <InputError
-                                message={errors.email}
-                                className="mt-2"
-                            />
-                        </div>
+                    <Stack gap="md">
+                        <TextInput
+                            label="Email"
+                            id="email"
+                            type="email"
+                            name="email"
+                            autoComplete="email"
+                            value={email}
+                            readOnly
+                            error={errors.email}
+                        />
 
-                        <div className="grid gap-2">
-                            <Label htmlFor="password">Password</Label>
-                            <PasswordInput
-                                id="password"
-                                name="password"
-                                autoComplete="new-password"
-                                className="mt-1 block w-full"
-                                autoFocus
-                                placeholder="Password"
-                            />
-                            <InputError message={errors.password} />
-                        </div>
+                        <PasswordInput
+                            label="Password"
+                            id="password"
+                            name="password"
+                            autoComplete="new-password"
+                            autoFocus
+                            placeholder="Password"
+                            error={errors.password}
+                        />
 
-                        <div className="grid gap-2">
-                            <Label htmlFor="password_confirmation">
-                                Confirm password
-                            </Label>
-                            <PasswordInput
-                                id="password_confirmation"
-                                name="password_confirmation"
-                                autoComplete="new-password"
-                                className="mt-1 block w-full"
-                                placeholder="Confirm password"
-                            />
-                            <InputError
-                                message={errors.password_confirmation}
-                                className="mt-2"
-                            />
-                        </div>
+                        <PasswordInput
+                            label="Confirm password"
+                            id="password_confirmation"
+                            name="password_confirmation"
+                            autoComplete="new-password"
+                            placeholder="Confirm password"
+                            error={errors.password_confirmation}
+                        />
 
                         <Button
                             type="submit"
-                            className="mt-4 w-full"
-                            disabled={processing}
+                            fullWidth
+                            loading={processing}
                             data-test="reset-password-button"
+                            mt="md"
                         >
-                            {processing && <Spinner />}
                             Reset password
                         </Button>
-                    </div>
+                    </Stack>
                 )}
             </Form>
         </>

@@ -1,12 +1,5 @@
-import { Form, Head } from '@inertiajs/react';
-import InputError from '@/components/input-error';
-import PasswordInput from '@/components/password-input';
-import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Spinner } from '@/components/ui/spinner';
+import { Form, Head, Link } from '@inertiajs/react';
+import { TextInput, PasswordInput, Checkbox, Button, Stack, Text, Group, Anchor } from '@mantine/core';
 import { register } from '@/routes';
 import { store } from '@/routes/login';
 import { request } from '@/routes/password';
@@ -29,39 +22,37 @@ export default function Login({
             <Form
                 {...store.form()}
                 resetOnSuccess={['password']}
-                className="flex flex-col gap-6"
             >
                 {({ processing, errors }) => (
-                    <>
-                        <div className="grid gap-6">
-                            <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    name="email"
-                                    required
-                                    autoFocus
-                                    tabIndex={1}
-                                    autoComplete="email"
-                                    placeholder="email@example.com"
-                                />
-                                <InputError message={errors.email} />
-                            </div>
+                    <Stack gap="xl">
+                        <Stack gap="md">
+                            <TextInput
+                                label="Email address"
+                                id="email"
+                                type="email"
+                                name="email"
+                                required
+                                autoFocus
+                                tabIndex={1}
+                                autoComplete="email"
+                                placeholder="email@example.com"
+                                error={errors.email}
+                            />
 
-                            <div className="grid gap-2">
-                                <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
+                            <Stack gap={4}>
+                                <Group justify="space-between">
+                                    <Text size="sm" fw={500}>Password</Text>
                                     {canResetPassword && (
-                                        <TextLink
+                                        <Anchor
+                                            component={Link}
                                             href={request()}
-                                            className="ml-auto text-sm"
+                                            size="xs"
                                             tabIndex={5}
                                         >
                                             Forgot password?
-                                        </TextLink>
+                                        </Anchor>
                                     )}
-                                </div>
+                                </Group>
                                 <PasswordInput
                                     id="password"
                                     name="password"
@@ -69,48 +60,45 @@ export default function Login({
                                     tabIndex={2}
                                     autoComplete="current-password"
                                     placeholder="Password"
+                                    error={errors.password}
                                 />
-                                <InputError message={errors.password} />
-                            </div>
+                            </Stack>
 
-                            <div className="flex items-center space-x-3">
-                                <Checkbox
-                                    id="remember"
-                                    name="remember"
-                                    tabIndex={3}
-                                />
-                                <Label htmlFor="remember">Remember me</Label>
-                            </div>
+                            <Checkbox
+                                label="Remember me"
+                                id="remember"
+                                name="remember"
+                                tabIndex={3}
+                            />
 
                             <Button
                                 type="submit"
-                                className="mt-4 w-full"
+                                fullWidth
                                 tabIndex={4}
-                                disabled={processing}
+                                loading={processing}
                                 data-test="login-button"
                             >
-                                {processing && <Spinner />}
                                 Log in
                             </Button>
-                        </div>
+                        </Stack>
 
                         {canRegister && (
-                            <div className="text-center text-sm text-muted-foreground">
+                            <Text ta="center" size="sm" c="dimmed">
                                 Don't have an account?{' '}
-                                <TextLink href={register()} tabIndex={5}>
+                                <Anchor component={Link} href={register()} tabIndex={5}>
                                     Sign up
-                                </TextLink>
-                            </div>
+                                </Anchor>
+                            </Text>
                         )}
-                    </>
+
+                        {status && (
+                            <Text ta="center" size="sm" c="green" fw={500}>
+                                {status}
+                            </Text>
+                        )}
+                    </Stack>
                 )}
             </Form>
-
-            {status && (
-                <div className="mb-4 text-center text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
         </>
     );
 }

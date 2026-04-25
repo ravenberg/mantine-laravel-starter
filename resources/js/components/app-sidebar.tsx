@@ -1,18 +1,8 @@
 import { Link } from '@inertiajs/react';
+import { NavLink, Stack, Group, ScrollArea, Burger } from '@mantine/core';
 import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
-import { NavFooter } from '@/components/nav-footer';
-import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
-import {
-    Sidebar,
-    SidebarContent,
-    SidebarFooter,
-    SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-} from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
@@ -37,29 +27,57 @@ const footerNavItems: NavItem[] = [
     },
 ];
 
-export function AppSidebar() {
+interface AppSidebarProps {
+    toggle?: () => void;
+    opened?: boolean;
+}
+
+export function AppSidebar({ toggle, opened }: AppSidebarProps) {
     return (
-        <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
-                                <AppLogo />
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarHeader>
+        <Stack h="100%" gap="md" p="md">
+            <Group p="xs" justify="space-between">
+                <Link href={dashboard()} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center' }}>
+                    <AppLogo />
+                </Link>
+                <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            </Group>
 
-            <SidebarContent>
-                <NavMain items={mainNavItems} />
-            </SidebarContent>
+            <ScrollArea style={{ flex: 1 }}>
+                <Stack gap={4}>
+                    {mainNavItems.map((item) => {
+                        const Icon = item.icon;
 
-            <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                        return (
+                            <NavLink
+                                key={item.title}
+                                component={Link}
+                                href={item.href}
+                                label={item.title}
+                                leftSection={Icon ? <Icon size={18} /> : null}
+                                active={window.location.pathname === item.href}
+                            />
+                        )
+                    })}
+                </Stack>
+            </ScrollArea>
+
+            <Stack gap={4}>
+                {footerNavItems.map((item) => {
+                    const Icon = item.icon;
+
+                    return (
+                        <NavLink
+                            key={item.title}
+                            component="a"
+                            href={item.href as string}
+                            label={item.title}
+                            leftSection={Icon ? <Icon size={18} /> : null}
+                            target="_blank"
+                        />
+                    )
+                })}
                 <NavUser />
-            </SidebarFooter>
-        </Sidebar>
+            </Stack>
+        </Stack>
     );
 }

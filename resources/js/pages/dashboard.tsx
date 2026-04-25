@@ -1,36 +1,37 @@
 import { Head } from '@inertiajs/react';
-import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { SimpleGrid, Paper, Box } from '@mantine/core';
+import { PlaceholderPattern } from '@/components/placeholder-pattern';
 import { dashboard } from '@/routes';
 
 export default function Dashboard() {
     return (
         <>
             <Head title="Dashboard" />
-            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
-                <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
-                        <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                    </div>
-                </div>
-                <div className="relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
-                    <PlaceholderPattern className="absolute inset-0 size-full stroke-neutral-900/20 dark:stroke-neutral-100/20" />
-                </div>
-            </div>
+            <Box p="md">
+                <SimpleGrid cols={{ base: 1, md: 3 }} spacing="md" mb="md">
+                    <Paper withBorder radius="lg" style={{ aspectRatio: '16/9', overflow: 'hidden', position: 'relative' }}>
+                        <PlaceholderPattern style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', stroke: 'var(--mantine-color-gray-3)' }} />
+                    </Paper>
+                    <Paper withBorder radius="lg" style={{ aspectRatio: '16/9', overflow: 'hidden', position: 'relative' }}>
+                        <PlaceholderPattern style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', stroke: 'var(--mantine-color-gray-3)' }} />
+                    </Paper>
+                    <Paper withBorder radius="lg" style={{ aspectRatio: '16/9', overflow: 'hidden', position: 'relative' }}>
+                        <PlaceholderPattern style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', stroke: 'var(--mantine-color-gray-3)' }} />
+                    </Paper>
+                </SimpleGrid>
+                <Paper withBorder radius="lg" style={{ minHeight: '60vh', overflow: 'hidden', position: 'relative' }}>
+                    <PlaceholderPattern style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', stroke: 'var(--mantine-color-gray-3)' }} />
+                </Paper>
+            </Box>
         </>
     );
 }
 
-Dashboard.layout = {
+Dashboard.layout = () => ({
     breadcrumbs: [
         {
             title: 'Dashboard',
             href: dashboard(),
         },
     ],
-};
+});

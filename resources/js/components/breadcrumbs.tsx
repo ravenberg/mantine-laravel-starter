@@ -1,13 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { Fragment } from 'react';
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
+import { Breadcrumbs as MantineBreadcrumbs, Anchor, Text } from '@mantine/core';
 import type { BreadcrumbItem as BreadcrumbItemType } from '@/types';
 
 export function Breadcrumbs({
@@ -15,36 +7,27 @@ export function Breadcrumbs({
 }: {
     breadcrumbs: BreadcrumbItemType[];
 }) {
-    return (
-        <>
-            {breadcrumbs.length > 0 && (
-                <Breadcrumb>
-                    <BreadcrumbList>
-                        {breadcrumbs.map((item, index) => {
-                            const isLast = index === breadcrumbs.length - 1;
+    if (breadcrumbs.length === 0) {
+        return null;
+    }
 
-                            return (
-                                <Fragment key={index}>
-                                    <BreadcrumbItem>
-                                        {isLast ? (
-                                            <BreadcrumbPage>
-                                                {item.title}
-                                            </BreadcrumbPage>
-                                        ) : (
-                                            <BreadcrumbLink asChild>
-                                                <Link href={item.href}>
-                                                    {item.title}
-                                                </Link>
-                                            </BreadcrumbLink>
-                                        )}
-                                    </BreadcrumbItem>
-                                    {!isLast && <BreadcrumbSeparator />}
-                                </Fragment>
-                            );
-                        })}
-                    </BreadcrumbList>
-                </Breadcrumb>
-            )}
-        </>
-    );
+    const items = breadcrumbs.map((item, index) => {
+        const isLast = index === breadcrumbs.length - 1;
+
+        if (isLast) {
+            return (
+                <Text key={index} size="sm" fw={500}>
+                    {item.title}
+                </Text>
+            );
+        }
+
+        return (
+            <Anchor component={Link} href={item.href} key={index} size="sm">
+                {item.title}
+            </Anchor>
+        );
+    });
+
+    return <MantineBreadcrumbs>{items}</MantineBreadcrumbs>;
 }

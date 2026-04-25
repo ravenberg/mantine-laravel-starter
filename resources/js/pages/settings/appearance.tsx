@@ -1,32 +1,29 @@
 import { Head } from '@inertiajs/react';
+import { Stack } from '@mantine/core';
 import AppearanceTabs from '@/components/appearance-tabs';
 import Heading from '@/components/heading';
 import { edit as editAppearance } from '@/routes/appearance';
 
 export default function Appearance() {
     return (
-        <>
+        <Stack gap="xl">
             <Head title="Appearance settings" />
 
-            <h1 className="sr-only">Appearance settings</h1>
-
-            <div className="space-y-6">
-                <Heading
-                    variant="small"
-                    title="Appearance settings"
-                    description="Update your account's appearance settings"
-                />
-                <AppearanceTabs />
-            </div>
-        </>
+            <Heading
+                variant="small"
+                title="Appearance settings"
+                description="Update your account's appearance settings"
+            />
+            <AppearanceTabs />
+        </Stack>
     );
 }
 
-Appearance.layout = {
+Appearance.layout = (page: React.ReactNode) => ({
     breadcrumbs: [
         {
             title: 'Appearance settings',
             href: editAppearance(),
         },
     ],
-};
+});

@@ -1,14 +1,11 @@
 import { Form, Head } from '@inertiajs/react';
+import { Stack, PasswordInput, Button, Text, Group, Box } from '@mantine/core';
 import { ShieldCheck } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import SecurityController from '@/actions/App/Http/Controllers/Settings/SecurityController';
 import Heading from '@/components/heading';
-import InputError from '@/components/input-error';
-import PasswordInput from '@/components/password-input';
 import TwoFactorRecoveryCodes from '@/components/two-factor-recovery-codes';
 import TwoFactorSetupModal from '@/components/two-factor-setup-modal';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { useTwoFactorAuth } from '@/hooks/use-two-factor-auth';
 import { edit } from '@/routes/security';
 import { disable, enable } from '@/routes/two-factor';
@@ -50,12 +47,10 @@ export default function Security({
     }, [twoFactorEnabled, clearTwoFactorAuthData]);
 
     return (
-        <>
+        <Stack gap="xl">
             <Head title="Security settings" />
 
-            <h1 className="sr-only">Security settings</h1>
-
-            <div className="space-y-6">
+            <Stack gap="xl">
                 <Heading
                     variant="small"
                     title="Update password"
@@ -82,144 +77,115 @@ export default function Security({
                             currentPasswordInput.current?.focus();
                         }
                     }}
-                    className="space-y-6"
                 >
                     {({ errors, processing }) => (
-                        <>
-                            <div className="grid gap-2">
-                                <Label htmlFor="current_password">
-                                    Current password
-                                </Label>
+                        <Stack gap="md">
+                            <PasswordInput
+                                label="Current password"
+                                id="current_password"
+                                ref={currentPasswordInput}
+                                name="current_password"
+                                autoComplete="current-password"
+                                placeholder="Current password"
+                                error={errors.current_password}
+                            />
 
-                                <PasswordInput
-                                    id="current_password"
-                                    ref={currentPasswordInput}
-                                    name="current_password"
-                                    className="mt-1 block w-full"
-                                    autoComplete="current-password"
-                                    placeholder="Current password"
-                                />
+                            <PasswordInput
+                                label="New password"
+                                id="password"
+                                ref={passwordInput}
+                                name="password"
+                                autoComplete="new-password"
+                                placeholder="New password"
+                                error={errors.password}
+                            />
 
-                                <InputError message={errors.current_password} />
-                            </div>
+                            <PasswordInput
+                                label="Confirm password"
+                                id="password_confirmation"
+                                name="password_confirmation"
+                                autoComplete="new-password"
+                                placeholder="Confirm password"
+                                error={errors.password_confirmation}
+                            />
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="password">New password</Label>
-
-                                <PasswordInput
-                                    id="password"
-                                    ref={passwordInput}
-                                    name="password"
-                                    className="mt-1 block w-full"
-                                    autoComplete="new-password"
-                                    placeholder="New password"
-                                />
-
-                                <InputError message={errors.password} />
-                            </div>
-
-                            <div className="grid gap-2">
-                                <Label htmlFor="password_confirmation">
-                                    Confirm password
-                                </Label>
-
-                                <PasswordInput
-                                    id="password_confirmation"
-                                    name="password_confirmation"
-                                    className="mt-1 block w-full"
-                                    autoComplete="new-password"
-                                    placeholder="Confirm password"
-                                />
-
-                                <InputError
-                                    message={errors.password_confirmation}
-                                />
-                            </div>
-
-                            <div className="flex items-center gap-4">
+                            <Group justify="flex-start">
                                 <Button
-                                    disabled={processing}
+                                    type="submit"
+                                    loading={processing}
                                     data-test="update-password-button"
                                 >
                                     Save password
                                 </Button>
-                            </div>
-                        </>
+                            </Group>
+                        </Stack>
                     )}
                 </Form>
-            </div>
+            </Stack>
 
             {canManageTwoFactor && (
-                <div className="space-y-6">
+                <Stack gap="xl">
                     <Heading
                         variant="small"
                         title="Two-factor authentication"
                         description="Manage your two-factor authentication settings"
                     />
                     {twoFactorEnabled ? (
-                        <div className="flex flex-col items-start justify-start space-y-4">
-                            <p className="text-sm text-muted-foreground">
-                                You will be prompted for a secure, random pin
-                                during login, which you can retrieve from the
-                                TOTP-supported application on your phone.
-                            </p>
+                        <Stack gap="md">
+                            <Text size="sm" c="dimmed">
+                                You will be prompted for a secure, random pin during login, which you can retrieve from the TOTP-supported application on your phone.
+                            </Text>
 
-                            <div className="relative inline">
-                                <Form {...disable.form()}>
-                                    {({ processing }) => (
-                                        <Button
-                                            variant="destructive"
-                                            type="submit"
-                                            disabled={processing}
-                                        >
-                                            Disable 2FA
-                                        </Button>
-                                    )}
-                                </Form>
-                            </div>
+                            <Form {...disable.form()}>
+                                {({ processing }) => (
+                                    <Button
+                                        variant="outline"
+                                        color="red"
+                                        type="submit"
+                                        loading={processing}
+                                    >
+                                        Disable 2FA
+                                    </Button>
+                                )}
+                            </Form>
 
                             <TwoFactorRecoveryCodes
                                 recoveryCodesList={recoveryCodesList}
                                 fetchRecoveryCodes={fetchRecoveryCodes}
                                 errors={errors}
                             />
-                        </div>
+                        </Stack>
                     ) : (
-                        <div className="flex flex-col items-start justify-start space-y-4">
-                            <p className="text-sm text-muted-foreground">
-                                When you enable two-factor authentication, you
-                                will be prompted for a secure pin during login.
-                                This pin can be retrieved from a TOTP-supported
-                                application on your phone.
-                            </p>
+                        <Stack gap="md">
+                            <Text size="sm" c="dimmed">
+                                When you enable two-factor authentication, you will be prompted for a secure pin during login. This pin can be retrieved from a TOTP-supported application on your phone.
+                            </Text>
 
-                            <div>
+                            <Box>
                                 {hasSetupData ? (
                                     <Button
                                         onClick={() => setShowSetupModal(true)}
+                                        leftSection={<ShieldCheck size={16} />}
                                     >
-                                        <ShieldCheck />
                                         Continue setup
                                     </Button>
                                 ) : (
                                     <Form
                                         {...enable.form()}
-                                        onSuccess={() =>
-                                            setShowSetupModal(true)
-                                        }
+                                        onSuccess={() => setShowSetupModal(true)}
                                     >
                                         {({ processing }) => (
                                             <Button
                                                 type="submit"
-                                                disabled={processing}
+                                                loading={processing}
                                             >
                                                 Enable 2FA
                                             </Button>
                                         )}
                                     </Form>
                                 )}
-                            </div>
-                        </div>
+                            </Box>
+                        </Stack>
                     )}
 
                     <TwoFactorSetupModal
@@ -233,9 +199,9 @@ export default function Security({
                         fetchSetupData={fetchSetupData}
                         errors={errors}
                     />
-                </div>
+                </Stack>
             )}
-        </>
+        </Stack>
     );
 }
 
